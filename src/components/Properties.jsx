@@ -8,11 +8,12 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  Progress,
+  Spinner,
 } from "@nextui-org/react";
 import SellerDetails from "./SellerDetails";
 
 function Properties() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [filters, setFilters] = useState({
     bedrooms: "",
     bathrooms: "",
@@ -21,9 +22,10 @@ function Properties() {
     nearby: "",
   });
 
-  const properties = useProperties();
+  const { properties, loading } = useProperties();
 
-  // Filter properties based on the filter values
+  const [openModalForProperty, setOpenModalForProperty] = useState({});
+
   const filteredProperties = properties.length
     ? properties.filter((property) => {
         return (
@@ -44,6 +46,14 @@ function Properties() {
         );
       })
     : [];
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-[80vh]">
+        <Spinner label="Loading..." color="primary" size="lg" />
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-[85%] m-auto my-4">
@@ -134,11 +144,26 @@ function Properties() {
               </p>
               <p className="text-sm">{property.description}</p>
               <>
-                <Button onPress={onOpen} className="my-4">
+                <Button
+                  onPress={() =>
+                    setOpenModalForProperty({
+                      ...openModalForProperty,
+                      [property.place]: true,
+                    })
+                  }
+                  className="my-4"
+                >
                   I'm interested
                 </Button>
-                {console.log(property.userId)}
-                <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <Modal
+                  isOpen={openModalForProperty[property.place] || false}
+                  onOpenChange={(isOpen) =>
+                    setOpenModalForProperty({
+                      ...openModalForProperty,
+                      [property.place]: isOpen,
+                    })
+                  }
+                >
                   <SellerDetails userId={property.userId} />
                 </Modal>
               </>

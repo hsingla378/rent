@@ -5,7 +5,7 @@ module.exports = async function (req, res, next) {
 
   try {
     const user = await User.findById(userId);
-    console.log(user.isSeller);
+    // console.log(user.isSeller);
     if (!user.isSeller) {
       return res
         .status(401)

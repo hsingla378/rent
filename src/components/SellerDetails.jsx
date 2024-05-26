@@ -7,16 +7,18 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  Progress,
 } from "@nextui-org/react";
 import useSellerDetails from "../utils/useSellerDetails";
 import axios from "axios";
 
 export default function SelelrDetails({ userId }) {
-  //   const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [sellerDetails, setSellerDetails] = useState(null);
 
   useEffect(() => {
     const getSellerDetails = async () => {
+      setLoading(true);
       try {
         let response = await axios.get(
           import.meta.env.VITE_BACKEND_URL + "/api/users/" + userId,
@@ -27,18 +29,14 @@ export default function SelelrDetails({ userId }) {
           }
         );
         setSellerDetails(response.data);
+        setLoading(false);
       } catch (error) {
         console.error(error);
+        setLoading(false);
       }
     };
     getSellerDetails();
   }, [userId]);
-
-  if (!sellerDetails) {
-    return <div>Loading...</div>;
-  }
-
-  console.log(sellerDetails);
 
   return (
     <ModalContent>
@@ -48,16 +46,22 @@ export default function SelelrDetails({ userId }) {
             Seller Details
           </ModalHeader>
           <ModalBody>
-            <p>
-              <strong>Name:</strong> {sellerDetails.firstName}{" "}
-              {sellerDetails.lastName}
-            </p>
-            <p>
-              <strong>Email:</strong> {sellerDetails.email}
-            </p>
-            <p>
-              <strong>Phone:</strong> {sellerDetails.phoneNumber}
-            </p>
+            {loading ? (
+              <Progress size="sm" isIndeterminate aria-label="Loading..." />
+            ) : (
+              <>
+                <p>
+                  <strong>Name:</strong> {sellerDetails.firstName}{" "}
+                  {sellerDetails.lastName}
+                </p>
+                <p>
+                  <strong>Email:</strong> {sellerDetails.email}
+                </p>
+                <p>
+                  <strong>Phone:</strong> {sellerDetails.phoneNumber}
+                </p>
+              </>
+            )}
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onPress={onClose}>
