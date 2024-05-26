@@ -1,6 +1,8 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+dotenv.config();
 
 // Register User
 exports.registerUser = async (req, res) => {
@@ -36,10 +38,10 @@ exports.registerUser = async (req, res) => {
     jwt.sign(
       payload,
       process.env.JWT_SECRET,
-      { expiresIn: "30m" },
+      { expiresIn: process.env.JWT_EXPIRE },
       (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        res.status(201).json({ message: "User created successfully" });
       }
     );
   } catch (err) {
@@ -72,7 +74,7 @@ exports.loginUser = async (req, res) => {
     jwt.sign(
       payload,
       process.env.JWT_SECRET,
-      { expiresIn: "30m" },
+      { expiresIn: process.env.JWT_EXPIRE },
       (err, token) => {
         if (err) throw err;
         res.json({ token });
