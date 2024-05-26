@@ -15,12 +15,9 @@ exports.getAllProperties = async (req, res) => {
 exports.createProperty = async (req, res) => {
   const { place, area, bedrooms, bathrooms, nearby, description } = req.body;
 
+//   console.log(req.user.isSeller);
+
   try {
-    if (!req.user.isSeller) {
-      return res
-        .status(401)
-        .json({ msg: "Unauthorized. Only sellers can add properties." });
-    }
 
     const newProperty = new Property({
       userId: req.user.id,

@@ -20,60 +20,30 @@ function Properties() {
     area: "",
     nearby: "",
   });
-  const properties = [
-    {
-      place: "New York",
-      area: "Manhattan",
-      bedrooms: 2,
-      bathrooms: 1,
-      nearby: "Central Park, Subway Station",
-      description:
-        "Cozy apartment in Manhattan, close to Central Park and subway.",
-    },
-    {
-      place: "Los Angeles",
-      area: "Hollywood Hills",
-      bedrooms: 4,
-      bathrooms: 3,
-      nearby: "Hollywood Sign, Griffith Observatory",
-      description:
-        "Spacious house in Hollywood Hills with stunning views of the city.",
-    },
-    {
-      place: "San Francisco",
-      area: "Mission District",
-      bedrooms: 3,
-      bathrooms: 2,
-      nearby: "Dolores Park, Valencia Street",
-      description:
-        "Charming townhouse in the heart of Mission District, close to parks and cafes.",
-    },
-    {
-      place: "Miami",
-      area: "South Beach",
-      bedrooms: 1,
-      bathrooms: 1,
-      nearby: "Ocean Drive, Art Deco Historic District",
-      description:
-        "Modern condo in South Beach, just steps away from the beach.",
-    },
-  ];
+
+  const properties = useProperties();
 
   // Filter properties based on the filter values
-  const filteredProperties = properties.filter((property) => {
-    return (
-      (filters.bedrooms === "" ||
-        property.bedrooms === parseInt(filters.bedrooms)) &&
-      (filters.bathrooms === "" ||
-        property.bathrooms === parseInt(filters.bathrooms)) &&
-      (filters.place === "" ||
-        property.place.toLowerCase().includes(filters.place.toLowerCase())) &&
-      (filters.area === "" ||
-        property.area.toLowerCase().includes(filters.area.toLowerCase())) &&
-      (filters.nearby === "" ||
-        property.nearby.toLowerCase().includes(filters.nearby.toLowerCase()))
-    );
-  });
+  const filteredProperties = properties.length
+    ? properties.filter((property) => {
+        return (
+          (filters.bedrooms === "" ||
+            property.bedrooms === parseInt(filters.bedrooms)) &&
+          (filters.bathrooms === "" ||
+            property.bathrooms === parseInt(filters.bathrooms)) &&
+          (filters.place === "" ||
+            property.place
+              .toLowerCase()
+              .includes(filters.place.toLowerCase())) &&
+          (filters.area === "" ||
+            property.area.toLowerCase().includes(filters.area.toLowerCase())) &&
+          (filters.nearby === "" ||
+            property.nearby
+              .toLowerCase()
+              .includes(filters.nearby.toLowerCase()))
+        );
+      })
+    : [];
 
   return (
     <div className="max-w-[85%] m-auto my-4">
@@ -167,8 +137,9 @@ function Properties() {
                 <Button onPress={onOpen} className="my-4">
                   I'm interested
                 </Button>
+                {console.log(property.userId)}
                 <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-                  <SellerDetails />
+                  <SellerDetails userId={property.userId} />
                 </Modal>
               </>
             </div>

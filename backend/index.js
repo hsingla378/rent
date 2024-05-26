@@ -1,11 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require("cors"); // Import the cors middleware
 const app = express();
 const routes = require("./routes");
 require("dotenv").config();
 
 // Middleware
+app.use(cors());
 app.use(bodyParser.json());
 
 // MongoDB Connection

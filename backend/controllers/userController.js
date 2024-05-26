@@ -88,8 +88,9 @@ exports.loginUser = async (req, res) => {
 
 // Get User by ID
 exports.getUserById = async (req, res) => {
+  const userId = req.params.id;
   try {
-    const user = await User.findById(req.user.id).select("-password");
+    const user = await User.findById(userId).select("-password");
     res.json(user);
   } catch (err) {
     console.error(err.message);

@@ -1,104 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
+import { Button, Input } from "@nextui-org/react";
+import Header from "./Header";
 
-const Register = () => {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-    password: "",
-    isSeller: false,
-  });
+export default function Register() {
+  const [error, setError] = React.useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // You can perform further validation and submit data here
-    console.log(formData);
+  const handleRegister = () => {
+    setError("Registering not implemented yet");
   };
 
   return (
     <div>
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="firstName">First Name:</label>
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-            required
-          />
+      <Header />
+      <div className="flex justify-center items-center h-[90vh]">
+        <div className="flex w-80 max-w-96 gap-4 flex-col">
+          <Input type="text" label="First Name" />
+          <Input type="text" label="Last Name" />
+          <Input type="email" label="Email" />
+          <Input type="number" label="Phone" />
+          <Input type="password" label="Password" />
+          {/* <Input type="email" label="Email" /> */}
+          <Button color="primary" onClick={handleRegister}>
+            Register
+          </Button>
+          {error && <p className="text-red-500">{error}</p>}
         </div>
-        <div>
-          <label htmlFor="lastName">Last Name:</label>
-          <input
-            type="text"
-            id="lastName"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="phoneNumber">Phone Number:</label>
-          <input
-            type="tel"
-            id="phoneNumber"
-            name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <input
-            type="checkbox"
-            id="isSeller"
-            name="isSeller"
-            checked={formData.isSeller}
-            onChange={() =>
-              setFormData({ ...formData, isSeller: !formData.isSeller })
-            }
-          />
-          <label htmlFor="isSeller">Register as Seller</label>
-        </div>
-        <button type="submit">Register</button>
-      </form>
+      </div>
     </div>
   );
-};
-
-export default Register;
+}

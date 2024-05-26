@@ -10,6 +10,7 @@ router.post("/register", userController.registerUser);
 router.post("/login", userController.loginUser);
 
 // Get User by ID Route
-router.get("/", auth, userController.getUserById);
+// router.get("/:id", auth, userController.getUserById);
+router.get("/:id", userController.getUserById);
 
 module.exports = router;

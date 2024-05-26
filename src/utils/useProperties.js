@@ -7,7 +7,7 @@ const useProperties = () => {
   const getPropeties = async () => {
     try {
       let response = await axios.get(
-        import.meta.env.VITE_BACKEND_URL + "/properties"
+        import.meta.env.VITE_BACKEND_URL + "/api/properties"
       );
       let data = await response.data;
       setProperties(data);
