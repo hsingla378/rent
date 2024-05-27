@@ -11,6 +11,7 @@ router.post("/login", userController.loginUser);
 
 // Get User by ID Route
 // router.get("/:id", auth, userController.getUserById);
-router.get("/:id", auth, userController.getUserById);
+router.get("/:userId/property/:propertyId", auth, userController.getSellerAndSendEmails);
+
 
 module.exports = router;
