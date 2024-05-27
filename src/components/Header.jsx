@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("isSeller");
     window.location.href = "/";
   };
 
@@ -15,12 +16,16 @@ const Header = () => {
       </Link>
       <div className="flex justify-center items-center gap-4">
         {/* <input placeholder="Search" /> */}
-        <Link to={"/login"}>
-          <button>Login</button>
-        </Link>
-        <Link to={"/register"}>
-          <button>Register</button>
-        </Link>
+        {!localStorage.getItem("token") && (
+          <>
+            <Link to={"/login"}>
+              <button>Login</button>
+            </Link>
+            <Link to={"/register"}>
+              <button>Register</button>
+            </Link>
+          </>
+        )}
 
         {localStorage.getItem("isSeller") && (
           <Button size="sm" color="warning" className="font-semibold">

@@ -24,7 +24,8 @@ import { FaChevronDown } from "react-icons/fa";
 import Header from "../components/Header";
 import useProperties from "../utils/useProperties";
 // import { columns, users, statusOptions } from "./data";
-// import { capitalize } from "./utils";
+import { capitalize } from "../utils/constant";
+import axios from "axios";
 
 const statusColorMap = {
   active: "success",
@@ -56,17 +57,13 @@ export default function Dashboard() {
   });
   const [page, setPage] = React.useState(1);
 
-  function capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
   const columns = [
     { name: "NAME", uid: "name", sortable: true },
     { name: "PLACE", uid: "place", sortable: true },
     { name: "AREA", uid: "area", sortable: true },
     { name: "BEDROOMS", uid: "bedrooms", sortable: true },
-    { name: "BATHROOMS", uid: "bathrooms", sortable: true  },
-    { name: "NEARBY", uid: "nearby" , sortable: true },
+    { name: "BATHROOMS", uid: "bathrooms", sortable: true },
+    { name: "NEARBY", uid: "nearby", sortable: true },
     // { name: "STATUS", uid: "status", sortable: true },
     { name: "ACTIONS", uid: "actions" },
   ];
@@ -80,6 +77,23 @@ export default function Dashboard() {
   const { loading, properties } = useProperties();
 
   const hasSearchFilter = Boolean(filterValue);
+
+  function handleDeleteProperty(id) {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return;
+    }
+    try {
+      axios.delete(import.meta.env.VITE_BACKEND_URL + `/api/properties/${id}`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+      alert("Property deleted successfully, refresh the page to see changes.");
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
@@ -173,9 +187,16 @@ export default function Dashboard() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
+                {/* <DropdownItem>View</DropdownItem> */}
                 <DropdownItem>Edit</DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
+                <DropdownItem
+                  onClick={() => {
+                    confirm("Are you sure you want to delete this property?") &&
+                      handleDeleteProperty(property._id);
+                  }}
+                >
+                  Delete
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -356,8 +377,6 @@ export default function Dashboard() {
         <Progress label="Loading..." value={55} className="max-w-md" />
       </div>
     );
-
-  console.log(properties);
 
   return (
     <div>
