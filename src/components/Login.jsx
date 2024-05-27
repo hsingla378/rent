@@ -19,7 +19,10 @@ export default function Login() {
           password,
         }
       );
-
+      const isSeller = response.data.user.isSeller;
+      if (isSeller) {
+        localStorage.setItem("isSeller", isSeller);
+      }
       localStorage.setItem("token", response.data.token);
       navigate("/");
     } catch (err) {

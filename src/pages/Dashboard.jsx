@@ -65,8 +65,8 @@ export default function Dashboard() {
     { name: "PLACE", uid: "place", sortable: true },
     { name: "AREA", uid: "area", sortable: true },
     { name: "BEDROOMS", uid: "bedrooms", sortable: true },
-    { name: "BATHROOMS", uid: "bathrooms" },
-    { name: "NEARBY", uid: "nearby" },
+    { name: "BATHROOMS", uid: "bathrooms", sortable: true  },
+    { name: "NEARBY", uid: "nearby" , sortable: true },
     // { name: "STATUS", uid: "status", sortable: true },
     { name: "ACTIONS", uid: "actions" },
   ];

@@ -3,6 +3,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Header = () => {
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+  };
+
   return (
     <div className="flex justify-between items-center px-6 py-3  bg-blue-500 text-white mb-12">
       <Link to={"/"}>
@@ -17,9 +22,21 @@ const Header = () => {
           <button>Register</button>
         </Link>
 
-        <Button size="sm" color="warning" className="font-semibold">
-          <Link to={"/dashboard"}>Dashboard</Link>
-        </Button>
+        {localStorage.getItem("isSeller") && (
+          <Button size="sm" color="warning" className="font-semibold">
+            <Link to={"/dashboard"}>Dashboard</Link>
+          </Button>
+        )}
+        {localStorage.getItem("token") && (
+          <Button
+            size="sm"
+            color="danger"
+            className="font-semibold"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
+        )}
       </div>
     </div>
   );
