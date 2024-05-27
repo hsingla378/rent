@@ -11,6 +11,6 @@ router.post("/login", userController.loginUser);
 
 // Get User by ID Route
 // router.get("/:id", auth, userController.getUserById);
-router.get("/:id", userController.getUserById);
+router.get("/:id", auth, userController.getUserById);
 
 module.exports = router;

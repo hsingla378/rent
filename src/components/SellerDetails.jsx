@@ -15,6 +15,7 @@ import axios from "axios";
 export default function SelelrDetails({ userId }) {
   const [loading, setLoading] = useState(true);
   const [sellerDetails, setSellerDetails] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const getSellerDetails = async () => {
@@ -32,7 +33,15 @@ export default function SelelrDetails({ userId }) {
         setLoading(false);
       } catch (error) {
         console.error(error);
+        if (error.response && error.response.status === 401) {
+          setError("Please login to view the seller details.");
+        } else {
+          setError(
+            "An error occurred while fetching the seller details. check console for more information."
+          );
+        }
         setLoading(false);
+        return;
       }
     };
     getSellerDetails();
@@ -48,6 +57,8 @@ export default function SelelrDetails({ userId }) {
           <ModalBody>
             {loading ? (
               <Progress size="sm" isIndeterminate aria-label="Loading..." />
+            ) : error ? (
+              <p className="text-red-500">{error}</p>
             ) : (
               <>
                 <p>
