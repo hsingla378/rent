@@ -152,6 +152,7 @@ function Properties() {
                     })
                   }
                   className="my-4"
+                  color="primary"
                 >
                   I'm interested
                 </Button>

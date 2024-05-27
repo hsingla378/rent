@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Button, Input } from "@nextui-org/react";
+import { Button, Checkbox, Input } from "@nextui-org/react";
 import Header from "./Header";
 import { useNavigate } from "react-router-dom";
 
@@ -12,18 +12,23 @@ export default function Register() {
     email: "",
     phoneNumber: "",
     password: "",
+    isSeller: false,
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setValues({ ...values, [name]: value });
+    const { name, value, type, checked } = e.target;
+    setValues({
+      ...values,
+      [name]: type === "checkbox" ? checked : value,
+    });
   };
 
   const handleRegister = async () => {
     try {
-      const { firstName, lastName, email, phoneNumber, password } = values;
+      const { firstName, lastName, email, phoneNumber, password, isSeller } =
+        values;
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/api/users/register",
         {
@@ -32,9 +37,13 @@ export default function Register() {
           email,
           phoneNumber,
           password,
+          isSeller,
         }
       );
-      navigate("/");
+      if (response.status === 201) {
+        console.log("Registration successful:", response.data);
+        navigate("/");
+      }
     } catch (error) {
       console.error("Registration failed:", error);
       setError("Registration failed. Please try again.");
@@ -81,6 +90,13 @@ export default function Register() {
             value={values.password}
             onChange={handleChange}
           />
+          <Checkbox
+            checked={values.isSeller}
+            name="isSeller"
+            onChange={handleChange}
+          >
+            I am a Seller
+          </Checkbox>
           <Button color="primary" onClick={handleRegister}>
             Register
           </Button>
