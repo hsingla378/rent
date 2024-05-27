@@ -8,9 +8,12 @@ import {
   Button,
   useDisclosure,
   Progress,
+  Chip,
 } from "@nextui-org/react";
 import useSellerDetails from "../utils/useSellerDetails";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 export default function SelelrDetails({ userId }) {
   const [loading, setLoading] = useState(true);
@@ -34,7 +37,7 @@ export default function SelelrDetails({ userId }) {
       } catch (error) {
         console.error(error);
         if (error.response && error.response.status === 401) {
-          setError("Please login to view the seller details.");
+          setError("<p>Please login to view the seller details.</p>");
         } else {
           setError(
             "An error occurred while fetching the seller details. check console for more information."
@@ -58,7 +61,22 @@ export default function SelelrDetails({ userId }) {
             {loading ? (
               <Progress size="sm" isIndeterminate aria-label="Loading..." />
             ) : error ? (
-              <p className="text-red-500">{error}</p>
+              <>
+                {/* <p className="text-red-500">{error}</p> */}
+                <p>
+                  Please{" "}
+                  <span>
+                    <Link to={"/login"}>
+                      <Chip radius="sm" color="warning">
+                        <span className="flex justify-center items-center gap-2 font-semibold">
+                          Login <FaExternalLinkAlt className="text-[10px]" />
+                        </span>
+                      </Chip>
+                    </Link>
+                  </span>{" "}
+                  to view the seller details.
+                </p>
+              </>
             ) : (
               <>
                 <p>

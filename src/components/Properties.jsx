@@ -10,8 +10,13 @@ import {
   useDisclosure,
   Progress,
   Spinner,
+  CardBody,
+  Card,
 } from "@nextui-org/react";
 import SellerDetails from "./SellerDetails";
+import { FaHeart } from "react-icons/fa6";
+import { toast } from "sonner";
+import axios from "axios";
 
 function Properties() {
   const [filters, setFilters] = useState({
@@ -25,6 +30,34 @@ function Properties() {
   const { properties, loading } = useProperties();
 
   const [openModalForProperty, setOpenModalForProperty] = useState({});
+
+  const handleLikeBtn = async (propertyId) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Please login to like a property!");
+      return;
+    }
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/properties/${propertyId}/like`,
+        {},
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      toast.success("Property liked successfully!");
+    } catch (error) {
+      if (error.response.status === 404) {
+        toast.error("Property not found!");
+      } else if (error.response.status === 400) {
+        toast.error("You have already liked this property!");
+      } else {
+        toast.error("Something went wrong, please try again later!");
+      }
+    }
+  };
 
   const filteredProperties = properties.length
     ? properties.filter((property) => {
@@ -128,47 +161,71 @@ function Properties() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {filteredProperties.map((property) => {
           return (
-            <div key={property.place} className="border p-4 my-4">
-              <h2 className="text-xl font-bold">
-                {property.place}, {property.area}
-              </h2>
-              <p>
-                <span className="font-bold">Bedrooms:</span> {property.bedrooms}
-              </p>
-              <p>
-                <span className="font-bold">Bathrooms:</span>{" "}
-                {property.bathrooms}
-              </p>
-              <p>
-                <span className="font-bold">Nearby:</span> {property.nearby}
-              </p>
-              <p className="text-sm">{property.description}</p>
-              <>
-                <Button
-                  onPress={() =>
-                    setOpenModalForProperty({
-                      ...openModalForProperty,
-                      [property.place]: true,
-                    })
-                  }
-                  className="my-4"
-                  color="primary"
-                >
-                  I'm interested
-                </Button>
-                <Modal
-                  isOpen={openModalForProperty[property.place] || false}
-                  onOpenChange={(isOpen) =>
-                    setOpenModalForProperty({
-                      ...openModalForProperty,
-                      [property.place]: isOpen,
-                    })
-                  }
-                >
-                  <SellerDetails userId={property.userId} />
-                </Modal>
-              </>
-            </div>
+            <Card key={property.place}>
+              <CardBody>
+                <div className="p-4">
+                  <h2 className="text-xl font-bold">
+                    {property.place}, {property.area}
+                  </h2>
+                  <p>
+                    <span className="font-bold">Bedrooms:</span>{" "}
+                    {property.bedrooms}
+                  </p>
+                  <p>
+                    <span className="font-bold">Bathrooms:</span>{" "}
+                    {property.bathrooms}
+                  </p>
+                  <p>
+                    <span className="font-bold">Nearby:</span> {property.nearby}
+                  </p>
+                  <p>
+                    <span className="font-bold">Price:</span> {property.price}
+                  </p>
+                  <p>
+                    <span className="font-bold">Rating:</span> {property.rating}
+                  </p>
+
+                  <p className="text-sm">{property.description}</p>
+                  <div className="flex justify-center items-center gap-2 mt-4">
+                    <span className="font-bold">
+                      <Button
+                        color="danger"
+                        aria-label="Like"
+                        className="flex justify-center items-center w-fit"
+                        variant="ghost"
+                        onClick={() => handleLikeBtn(property._id)}
+                      >
+                        <span>{property.likes.length}</span>
+                        <span>{<FaHeart className="text-lg" />}</span>
+                      </Button>
+                    </span>
+                    <Button
+                      onPress={() =>
+                        setOpenModalForProperty({
+                          ...openModalForProperty,
+                          [property.place]: true,
+                        })
+                      }
+                      color="primary"
+                      variant="shadow"
+                    >
+                      I'm interested
+                    </Button>
+                    <Modal
+                      isOpen={openModalForProperty[property.place] || false}
+                      onOpenChange={(isOpen) =>
+                        setOpenModalForProperty({
+                          ...openModalForProperty,
+                          [property.place]: isOpen,
+                        })
+                      }
+                    >
+                      <SellerDetails userId={property.userId} />
+                    </Modal>
+                  </div>
+                </div>
+              </CardBody>
+            </Card>
           );
         })}
       </div>

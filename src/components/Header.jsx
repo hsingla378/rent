@@ -35,8 +35,8 @@ const Header = () => {
         {localStorage.getItem("token") && (
           <Button
             size="sm"
-            color="danger"
-            className="font-semibold"
+            // color="danger"
+            className="font-semibold bg-red-600 text-white"
             onClick={handleLogout}
           >
             Logout
