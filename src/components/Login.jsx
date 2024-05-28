@@ -3,6 +3,7 @@ import { Button, Input } from "@nextui-org/react";
 import Header from "./Header";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const [email, setEmail] = React.useState("");
@@ -19,14 +20,21 @@ export default function Login() {
           password,
         }
       );
-      const isSeller = response.data.user.isSeller;
-      if (isSeller) {
-        localStorage.setItem("isSeller", isSeller);
-      }
+
+      console.log(response.data);
+      // const isSeller = response.data.user.isSeller;
+
+      localStorage.setItem("isSeller", response.data.user.isSeller);
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("firstName", response.data.user.firstName);
+      localStorage.setItem("lastName", response.data.user.lastName);
+      localStorage.setItem("email", response.data.user.email);
+      localStorage.setItem("phoneNumber", response.data.user.phoneNumber);
+      toast.success("Login successful!");
       navigate("/");
     } catch (err) {
-      setError("Invalid email or password");
+      // setError("Invalid email or password");
+      toast.error("Invalid email or password");
       console.log(err);
     }
   }

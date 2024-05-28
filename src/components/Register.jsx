@@ -3,6 +3,7 @@ import axios from "axios";
 import { Button, Checkbox, Input } from "@nextui-org/react";
 import Header from "./Header";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function Register() {
   // State variables for form inputs and error handling
@@ -40,13 +41,11 @@ export default function Register() {
           isSeller,
         }
       );
-      if (response.status === 201) {
-        console.log("Registration successful:", response.data);
-        navigate("/");
-      }
+      toast.success("Registration successful. Please login to continue.");
+      navigate("/");
     } catch (error) {
       console.error("Registration failed:", error);
-      setError("Registration failed. Please try again.");
+      toast.error("Registration failed. Please try again.");
     }
   };
 

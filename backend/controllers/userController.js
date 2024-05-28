@@ -267,7 +267,7 @@ exports.getSellerAndSendEmails = async (req, res) => {
         console.error(`Error sending email to user: ${error}`);
         return res.status(500).send("Error sending email to user");
       }
-      console.log(`Email sent to user: ${info.response}`);
+      // console.log(`Email sent to user: ${info.response}`);
     });
 
     transporter.sendMail(mailOptionsSeller, (error, info) => {
@@ -275,7 +275,7 @@ exports.getSellerAndSendEmails = async (req, res) => {
         console.error(`Error sending email to seller: ${error}`);
         return res.status(500).send("Error sending email to seller");
       }
-      console.log(`Email sent to seller: ${info.response}`);
+      // console.log(`Email sent to seller: ${info.response}`);
     });
 
     res.json(seller);

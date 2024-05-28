@@ -26,6 +26,7 @@ import useProperties from "../utils/useProperties";
 // import { columns, users, statusOptions } from "./data";
 import { capitalize } from "../utils/constant";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const statusColorMap = {
   active: "success",
@@ -188,7 +189,9 @@ export default function Dashboard() {
               </DropdownTrigger>
               <DropdownMenu>
                 {/* <DropdownItem>View</DropdownItem> */}
-                <DropdownItem>Edit</DropdownItem>
+                <DropdownItem>
+                  <Link to={`/update-property/${property._id}`}>Edit</Link>{" "}
+                </DropdownItem>
                 <DropdownItem
                   onClick={() => {
                     confirm("Are you sure you want to delete this property?") &&
@@ -300,7 +303,7 @@ export default function Dashboard() {
               </DropdownMenu>
             </Dropdown>
             <Button color="primary" endContent={<FaPlus />}>
-              Add New
+              <Link to="/add-property">Add Property</Link>
             </Button>
           </div>
         </div>

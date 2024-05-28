@@ -15,7 +15,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
-export default function SelelrDetails({ userId }) {
+export default function SelelrDetails({ userId, propertyId }) {
   const [loading, setLoading] = useState(true);
   const [sellerDetails, setSellerDetails] = useState(null);
   const [error, setError] = useState(null);
@@ -25,7 +25,9 @@ export default function SelelrDetails({ userId }) {
       setLoading(true);
       try {
         let response = await axios.get(
-          import.meta.env.VITE_BACKEND_URL + "/api/users/" + userId,
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/api/users/${userId}/property/${propertyId}`,
           {
             headers: {
               Authorization: localStorage.getItem("token"),

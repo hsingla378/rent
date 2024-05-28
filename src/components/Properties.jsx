@@ -15,8 +15,8 @@ import {
 } from "@nextui-org/react";
 import SellerDetails from "./SellerDetails";
 import { FaHeart } from "react-icons/fa6";
-import { toast } from "sonner";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 function Properties() {
   const [filters, setFilters] = useState({
@@ -50,7 +50,7 @@ function Properties() {
       toast.success("Property liked successfully!");
     } catch (error) {
       if (error.response.status === 404) {
-        toast.error("Property not found!");
+        toast("Property not found!");
       } else if (error.response.status === 400) {
         toast.error("You have already liked this property!");
       } else {
@@ -220,7 +220,10 @@ function Properties() {
                         })
                       }
                     >
-                      <SellerDetails userId={property.userId} />
+                      <SellerDetails
+                        userId={property.userId}
+                        propertyId={property._id}
+                      />
                     </Modal>
                   </div>
                 </div>

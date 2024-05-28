@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button, Input, Textarea } from "@nextui-org/react";
 import Header from "./Header";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
-export default function AddProperty() {
+export default function UpdateProperty() {
+  const { id } = useParams();
   const [values, setValues] = useState({
     place: "",
     area: "",
@@ -26,7 +27,33 @@ export default function AddProperty() {
     });
   };
 
-  const handleAddProperty = async () => {
+  useEffect(() => {
+    const fetchProperty = async () => {
+      try {
+        const response = await axios.get(
+          import.meta.env.VITE_BACKEND_URL + "/api/properties/" + id
+        );
+        const property = response.data;
+        setValues({
+          place: property.place,
+          area: property.area,
+          bedrooms: property.bedrooms,
+          bathrooms: property.bathrooms,
+          nearby: property.nearby,
+          price: property.price,
+          rating: property.rating,
+          description: property.description,
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchProperty();
+  }, [id]);
+
+  console.log(values);
+
+  const handleUpdateProperty = async () => {
     try {
       const {
         place,
@@ -38,8 +65,8 @@ export default function AddProperty() {
         rating,
         description,
       } = values;
-      const response = await axios.post(
-        import.meta.env.VITE_BACKEND_URL + "/api/properties",
+      const response = await axios.put(
+        import.meta.env.VITE_BACKEND_URL + "/api/properties/" + id,
         {
           place: place,
           area: parseInt(area) + " sqft",
@@ -56,7 +83,7 @@ export default function AddProperty() {
           },
         }
       );
-      toast.success("Property added successfully!");
+      toast.success("Property updated successfully!");
       setValues({
         place: "",
         area: "",
@@ -72,7 +99,7 @@ export default function AddProperty() {
       if (error.response.status === 401) {
         return toast.error("You need to login first!");
       }
-      toast.error("Failed to add property!");
+      toast.error("Failed to update property!");
     }
   };
 
@@ -139,9 +166,9 @@ export default function AddProperty() {
           <Button
             color="primary"
             className="font-bold"
-            onClick={handleAddProperty}
+            onClick={handleUpdateProperty}
           >
-            Add Property
+            Update Property
           </Button>
         </div>
       </div>

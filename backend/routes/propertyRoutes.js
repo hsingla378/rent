@@ -8,6 +8,9 @@ const checkIfLiked = require("../middleware/checkIfLiked");
 // Get All Properties
 router.get("/", propertyController.getAllProperties);
 
+// Get Single Property
+router.get("/:id", propertyController.getSingleProperty);
+
 // Create Property
 router.post("/", auth, checkSeller, propertyController.createProperty);
 

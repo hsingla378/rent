@@ -6,6 +6,10 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("isSeller");
+    localStorage.removeItem("firstName");
+    localStorage.removeItem("lastName");
+    localStorage.removeItem("email");
+    localStorage.removeItem("phoneNumber");
     window.location.href = "/";
   };
 
@@ -26,7 +30,11 @@ const Header = () => {
             </Link>
           </>
         )}
-
+        {localStorage.getItem("firstName") && (
+          <p className="font-semibold">
+            Hi, {localStorage.getItem("firstName")}
+          </p>
+        )}
         {localStorage.getItem("isSeller") && (
           <Button size="sm" color="warning" className="font-semibold">
             <Link to={"/dashboard"}>Dashboard</Link>
