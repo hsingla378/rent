@@ -42,7 +42,7 @@ export default function Register() {
         }
       );
       toast.success("Registration successful. Please login to continue.");
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       console.error("Registration failed:", error);
       toast.error("Registration failed. Please try again.");

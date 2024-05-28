@@ -22,7 +22,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiSearch } from "react-icons/fi";
 import { FaChevronDown } from "react-icons/fa";
 import Header from "../components/Header";
-import useProperties from "../utils/useProperties";
+import useSellerProperties from "../utils/useSellerProperties";
 // import { columns, users, statusOptions } from "./data";
 import { capitalize } from "../utils/constant";
 import axios from "axios";
@@ -75,7 +75,9 @@ export default function Dashboard() {
     { name: "Not Approved", uid: "not-approved" },
   ];
 
-  const { loading, properties } = useProperties();
+  const { loading, properties } = useSellerProperties(
+    localStorage.getItem("token")
+  );
 
   const hasSearchFilter = Boolean(filterValue);
 

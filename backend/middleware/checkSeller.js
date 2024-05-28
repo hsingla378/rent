@@ -2,7 +2,7 @@ const User = require("../models/User");
 
 module.exports = async function (req, res, next) {
   const userId = req.user.id;
-
+  // console.log("Userid", userId)
   try {
     const user = await User.findById(userId);
     // console.log(user.isSeller);

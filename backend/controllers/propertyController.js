@@ -261,6 +261,18 @@ exports.getSingleProperty = async (req, res) => {
   }
 };
 
+// Get properties for the authenticated seller
+exports.getSellerProperties = async (req, res) => {
+  console.log(req);
+  try {
+    const properties = await Property.find({ userId: req.user.id });
+    res.json(properties);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+};
+
 // Create a property
 exports.createProperty = async (req, res) => {
   const {
